@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">SuperStock</string>
+    <string name="login_subtitle">Inicia sesión para administrar tu inventario</string>
+    <string name="login_email">Correo electrónico</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_button">Iniciar sesión</string>
+    <string name="login_email_error">Ingresa un correo electrónico válido.</string>
+    <string name="login_password_error">La contraseña debe tener al menos 8 caracteres.</string>
+    <string name="login_valid">Datos válidos. ¡Formulario listo!</string>
+</resources>
