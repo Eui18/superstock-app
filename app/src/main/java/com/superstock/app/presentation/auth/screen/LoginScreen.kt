@@ -7,62 +7,93 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.superstock.app.di.AppViewModelProvider
 import com.superstock.app.presentation.auth.components.LoginForm
+import com.superstock.app.presentation.auth.state.LoginUiState
 import com.superstock.app.presentation.auth.viewmodel.LoginViewModel
 
 @Composable
-fun LoginScreen( loginViewModel: LoginViewModel = viewModel()) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory)
+) {
+    val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
-    val uiState by loginViewModel.uiState.collectAsState()
+    LoginContent(
+        uiState = uiState,
+        onEmailChange = loginViewModel::onEmailChange,
+        onPasswordChange = loginViewModel::onPasswordChange,
+        onLoginClick = loginViewModel::login,
+        onMessageShown = loginViewModel::clearUserMessage
+    )
+}
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "SuperStock",
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
+@Composable
+fun LoginContent(
+    uiState: LoginUiState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onLoginClick: () -> Unit,
+    onMessageShown: () -> Unit
+) {
+    val snackbarHostState = remember { SnackbarHostState() }
 
-        Spacer(modifier = Modifier.height(8.dp))
+    LaunchedEffect(uiState.userMessage) {
+        uiState.userMessage?.let { message ->
+            snackbarHostState.showSnackbar(message)
+            onMessageShown()
+        }
+    }
 
-        Text(
-            text = "Inicia sesión para administrar tu inventario",
-            style = MaterialTheme.typography.bodyMedium
-        )
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = "SuperStock",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.primary
+            )
 
-        Spacer(modifier = Modifier.height(32.dp))
-
-        LoginForm(
-            email = uiState.email,
-            password = uiState.password,
-            emailError = uiState.emailError,
-            passwordError = uiState.passwordError,
-            onEmailChange = loginViewModel::onEmailChange,
-            onPasswordChange = loginViewModel::onPasswordChange,
-            onLoginClick = loginViewModel::login
-        )
-
-        if (uiState.isFormValid) {
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = "Datos válidos. ¡Formulario listo!",
-                color = MaterialTheme.colorScheme.primary
+                text = "Inicia sesión para administrar tu inventario",
+                style = MaterialTheme.typography.bodyMedium
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            LoginForm(
+                email = uiState.email,
+                password = uiState.password,
+                emailError = uiState.emailError,
+                passwordError = uiState.passwordError,
+                isLoading = uiState.isLoading,
+                onEmailChange = onEmailChange,
+                onPasswordChange = onPasswordChange,
+                onLoginClick = onLoginClick
             )
         }
     }
