@@ -1,13 +1,16 @@
 package com.superstock.app.presentation.auth.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.superstock.app.data.repository.AuthRepository
 import com.superstock.app.presentation.auth.state.LoginUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class LoginViewModel : ViewModel() {
+class LoginViewModel(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState: StateFlow<LoginUiState> = _uiState.asStateFlow()

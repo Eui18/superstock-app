@@ -18,14 +18,17 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:3000/api/\"")
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://10.0.2.2:3000/api/\"")
+        }
         release {
             optimization {
                 enable = false
             }
+            buildConfigField("String", "BASE_URL", "\"https://api.tu-dominio.example/api/\"")
         }
     }
     compileOptions {
