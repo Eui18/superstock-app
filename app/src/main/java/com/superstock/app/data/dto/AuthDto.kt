@@ -9,6 +9,13 @@ data class LoginRequestDto(
 )
 
 @Serializable
+data class RegisterRequestDto(
+    val name: String,
+    val email: String,
+    val password: String
+)
+
+@Serializable
 data class UserDto(
     val id: Int,
     val name: String,

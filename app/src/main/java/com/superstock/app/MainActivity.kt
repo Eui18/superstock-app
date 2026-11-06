@@ -5,6 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.superstock.app.presentation.auth.screen.LoginScreen
 import com.superstock.app.ui.theme.SuperStockTheme
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import com.superstock.app.presentation.auth.screen.RegisterScreen
 
 class MainActivity : ComponentActivity() {
 
@@ -13,7 +18,13 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             SuperStockTheme {
-                LoginScreen()
+                var showRegister by rememberSaveable { mutableStateOf(false) }
+
+                if (showRegister) {
+                    RegisterScreen(onLoginClick = { showRegister = false })
+                } else {
+                    LoginScreen(onRegisterClick = { showRegister = true })
+                }
             }
         }
     }

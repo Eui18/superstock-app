@@ -11,6 +11,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,6 +29,7 @@ import com.superstock.app.presentation.auth.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
+    onRegisterClick: () -> Unit,
     loginViewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory)
 ) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
@@ -37,6 +39,7 @@ fun LoginScreen(
         onEmailChange = loginViewModel::onEmailChange,
         onPasswordChange = loginViewModel::onPasswordChange,
         onLoginClick = loginViewModel::login,
+        onRegisterClick = onRegisterClick,
         onMessageShown = loginViewModel::clearUserMessage
     )
 }
@@ -47,6 +50,7 @@ fun LoginContent(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
+    onRegisterClick: () -> Unit,
     onMessageShown: () -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -95,6 +99,11 @@ fun LoginContent(
                 onPasswordChange = onPasswordChange,
                 onLoginClick = onLoginClick
             )
+            Spacer(modifier = Modifier.height(8.dp))
+
+            TextButton(onClick = onRegisterClick) {
+                Text("¿No tienes cuenta? Regístrate")
+            }
         }
     }
 }

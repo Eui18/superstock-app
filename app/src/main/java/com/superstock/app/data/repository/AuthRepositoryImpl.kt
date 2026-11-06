@@ -4,6 +4,7 @@ import com.superstock.app.data.datasource.local.SessionStorage
 import com.superstock.app.data.datasource.remote.AuthApiService
 import com.superstock.app.data.datasource.remote.safeApiCall
 import com.superstock.app.data.dto.LoginRequestDto
+import com.superstock.app.data.dto.RegisterRequestDto
 
 class AuthRepositoryImpl(
     private val authApiService: AuthApiService,
@@ -15,5 +16,11 @@ class AuthRepositoryImpl(
             val response = authApiService.login(LoginRequestDto(email, password))
             sessionStorage.saveToken(response.token)
         }
+    }
+
+    override suspend fun register(name: String, email: String, password: String): Result<Unit> {
+        return safeApiCall {
+            authApiService.register(RegisterRequestDto(name, email, password))
+        }.map { }
     }
 }
