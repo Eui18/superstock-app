@@ -6,9 +6,12 @@ import com.superstock.app.data.datasource.local.DataStoreSessionStorage
 import com.superstock.app.data.datasource.local.SessionStorage
 import com.superstock.app.data.datasource.remote.AuthApiService
 import com.superstock.app.data.datasource.remote.AuthInterceptor
+import com.superstock.app.data.datasource.remote.ProductApiService
 import com.superstock.app.data.datasource.remote.apiJson
 import com.superstock.app.data.repository.AuthRepository
 import com.superstock.app.data.repository.AuthRepositoryImpl
+import com.superstock.app.data.repository.ProductRepository
+import com.superstock.app.data.repository.ProductRepositoryImpl
 import com.superstock.app.presentation.auth.viewmodel.LoginViewModelFactory
 import com.superstock.app.presentation.auth.viewmodel.RegisterViewModelFactory
 import com.superstock.app.presentation.home.viewmodel.HomeViewModelFactory
@@ -54,8 +57,16 @@ class AppContainer(
         retrofit.create(AuthApiService::class.java)
     }
 
+    private val productApiService: ProductApiService by lazy {
+        retrofit.create(ProductApiService::class.java)
+    }
+
     private val authRepository: AuthRepository by lazy {
         AuthRepositoryImpl(authApiService, sessionStorage)
+    }
+
+    private val productRepository: ProductRepository by lazy {
+        ProductRepositoryImpl(productApiService)
     }
 
     val sessionViewModelFactory: SessionViewModelFactory by lazy {
