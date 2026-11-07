@@ -20,11 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.superstock.app.di.AppViewModelProvider
+import com.superstock.app.SuperStockApplication
 import com.superstock.app.presentation.auth.components.RegisterForm
 import com.superstock.app.presentation.auth.state.RegisterUiState
 import com.superstock.app.presentation.auth.viewmodel.RegisterViewModel
@@ -32,7 +33,10 @@ import com.superstock.app.presentation.auth.viewmodel.RegisterViewModel
 @Composable
 fun RegisterScreen(
     onLoginClick: () -> Unit,
-    registerViewModel: RegisterViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    registerViewModel: RegisterViewModel = viewModel(
+        factory = (LocalContext.current.applicationContext as SuperStockApplication)
+            .container.registerViewModelFactory
+    )
 ) {
     val uiState by registerViewModel.uiState.collectAsStateWithLifecycle()
 

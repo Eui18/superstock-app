@@ -1,17 +1,15 @@
 package com.superstock.app.presentation.auth.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.superstock.app.data.repository.AuthRepository
 import com.superstock.app.presentation.auth.state.LoginUiState
+import com.superstock.app.presentation.common.validation.InputValidators
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-private const val MIN_PASSWORD_LENGTH = 8
 
 class LoginViewModel(
     private val authRepository: AuthRepository
@@ -35,8 +33,8 @@ class LoginViewModel(
         }
 
         val email = state.email.trim()
-        val emailValid = Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        val passwordValid = state.password.length >= MIN_PASSWORD_LENGTH
+        val emailValid = InputValidators.isValidEmail(email)
+        val passwordValid = InputValidators.isValidPassword(state.password)
 
         _uiState.update { it.copy(emailError = !emailValid, passwordError = !passwordValid) }
         if (!emailValid || !passwordValid) {
@@ -48,7 +46,7 @@ class LoginViewModel(
             authRepository.login(email, state.password).fold(
                 onSuccess = {
                     _uiState.update { current ->
-                        current.copy(isLoading = false, userMessage = "Inicio de sesión correcto")
+                        current.copy(isLoading = false)
                     }
                 },
                 onFailure = { error ->

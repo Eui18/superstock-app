@@ -18,11 +18,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.superstock.app.di.AppViewModelProvider
+import com.superstock.app.SuperStockApplication
 import com.superstock.app.presentation.auth.components.LoginForm
 import com.superstock.app.presentation.auth.state.LoginUiState
 import com.superstock.app.presentation.auth.viewmodel.LoginViewModel
@@ -30,7 +31,10 @@ import com.superstock.app.presentation.auth.viewmodel.LoginViewModel
 @Composable
 fun LoginScreen(
     onRegisterClick: () -> Unit,
-    loginViewModel: LoginViewModel = viewModel(factory = AppViewModelProvider.Factory)
+    loginViewModel: LoginViewModel = viewModel(
+        factory = (LocalContext.current.applicationContext as SuperStockApplication)
+            .container.loginViewModelFactory
+    )
 ) {
     val uiState by loginViewModel.uiState.collectAsStateWithLifecycle()
 
@@ -99,6 +103,7 @@ fun LoginContent(
                 onPasswordChange = onPasswordChange,
                 onLoginClick = onLoginClick
             )
+
             Spacer(modifier = Modifier.height(8.dp))
 
             TextButton(onClick = onRegisterClick) {

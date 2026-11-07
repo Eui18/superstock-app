@@ -1,10 +1,10 @@
 package com.superstock.app.presentation.auth.viewmodel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.superstock.app.data.repository.AuthRepository
 import com.superstock.app.presentation.auth.state.RegisterUiState
+import com.superstock.app.presentation.common.validation.InputValidators
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -14,10 +14,6 @@ import kotlinx.coroutines.launch
 class RegisterViewModel(
     private val authRepository: AuthRepository
 ) : ViewModel() {
-
-    private companion object {
-        const val MIN_PASSWORD_LENGTH = 8
-    }
 
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState.asStateFlow()
@@ -35,7 +31,12 @@ class RegisterViewModel(
     }
 
     fun onConfirmPasswordChange(confirmPassword: String) {
-        _uiState.update { it.copy(confirmPassword = confirmPassword, confirmPasswordError = false) }
+        _uiState.update {
+            it.copy(
+                confirmPassword = confirmPassword,
+                confirmPasswordError = false
+            )
+        }
     }
 
     fun register() {
@@ -47,9 +48,9 @@ class RegisterViewModel(
         val name = state.name.trim()
         val email = state.email.trim()
         val nameError = name.isEmpty()
-        val emailError = !Patterns.EMAIL_ADDRESS.matcher(email).matches()
-        val passwordError = state.password.length < MIN_PASSWORD_LENGTH
-        val confirmPasswordError = state.confirmPassword != state.password
+        val emailError = !InputValidators.isValidEmail(email)
+        val passwordError = !InputValidators.isValidPassword(state.password)
+        val confirmPasswordError = state.password != state.confirmPassword
 
         _uiState.update {
             it.copy(
@@ -67,9 +68,7 @@ class RegisterViewModel(
         viewModelScope.launch {
             authRepository.register(name, email, state.password).fold(
                 onSuccess = {
-                    _uiState.update {
-                        RegisterUiState(userMessage = "Cuenta creada correctamente. Ya puedes iniciar sesión.")
-                    }
+                    _uiState.update {current -> current.copy(isLoading = false) }
                 },
                 onFailure = { error ->
                     _uiState.update { current ->
