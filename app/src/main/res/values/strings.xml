@@ -7,4 +7,15 @@
     <string name="login_email_error">Ingresa un correo electrónico válido.</string>
     <string name="login_password_error">La contraseña debe tener al menos 8 caracteres.</string>
     <string name="login_valid">Datos válidos. ¡Formulario listo!</string>
+
+    <string name="home_logout">Cerrar sesión</string>
+
+    <string name="product_list_retry">Reintentar</string>
+    <string name="product_list_empty">No hay productos registrados.</string>
+
+    <string name="product_category">Categoría: %1$s</string>
+    <string name="product_price">Precio: $%1$.2f</string>
+    <string name="product_stock">Stock: %1$d</string>
+    <string name="product_active">Activo</string>
+    <string name="product_inactive">Inactivo</string>
 </resources>

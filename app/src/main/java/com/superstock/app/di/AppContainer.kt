@@ -15,6 +15,7 @@ import com.superstock.app.data.repository.ProductRepositoryImpl
 import com.superstock.app.presentation.auth.viewmodel.LoginViewModelFactory
 import com.superstock.app.presentation.auth.viewmodel.RegisterViewModelFactory
 import com.superstock.app.presentation.home.viewmodel.HomeViewModelFactory
+import com.superstock.app.presentation.products.viewmodel.ProductListViewModelFactory
 import com.superstock.app.presentation.session.viewmodel.SessionViewModelFactory
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -83,5 +84,9 @@ class AppContainer(
 
     val homeViewModelFactory: HomeViewModelFactory by lazy {
         HomeViewModelFactory(authRepository)
+    }
+
+    val productListViewModelFactory: ProductListViewModelFactory by lazy {
+        ProductListViewModelFactory(productRepository)
     }
 }
