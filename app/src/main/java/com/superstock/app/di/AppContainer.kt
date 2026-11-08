@@ -15,6 +15,7 @@ import com.superstock.app.data.repository.ProductRepositoryImpl
 import com.superstock.app.presentation.auth.viewmodel.LoginViewModelFactory
 import com.superstock.app.presentation.auth.viewmodel.RegisterViewModelFactory
 import com.superstock.app.presentation.home.viewmodel.HomeViewModelFactory
+import com.superstock.app.presentation.products.viewmodel.ProductCreateViewModelFactory
 import com.superstock.app.presentation.products.viewmodel.ProductDetailViewModelFactory
 import com.superstock.app.presentation.products.viewmodel.ProductListViewModelFactory
 import com.superstock.app.presentation.session.viewmodel.SessionViewModelFactory
@@ -89,6 +90,10 @@ class AppContainer(
 
     val productListViewModelFactory: ProductListViewModelFactory by lazy {
         ProductListViewModelFactory(productRepository)
+    }
+
+    val productCreateViewModelFactory: ProductCreateViewModelFactory by lazy {
+        ProductCreateViewModelFactory(productRepository)
     }
 
     fun productDetailViewModelFactory(productId: Int): ProductDetailViewModelFactory {

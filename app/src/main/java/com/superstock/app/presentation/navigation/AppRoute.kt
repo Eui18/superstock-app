@@ -7,6 +7,9 @@ object AppRoute {
 
     const val PRODUCT_ID = "productId"
     const val PRODUCT_DETAIL = "product_detail/{$PRODUCT_ID}"
+    const val PRODUCT_CREATE = "product_create"
+
+    const val PRODUCTS_CHANGED = "productsChanged"
 
     fun productDetail(productId: Int): String = "product_detail/$productId"
 }

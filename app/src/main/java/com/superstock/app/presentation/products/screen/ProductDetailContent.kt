@@ -1,4 +1,4 @@
-package com.superstock.app.presentation.products.components
+package com.superstock.app.presentation.products.screen
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.superstock.app.R
+import com.superstock.app.presentation.products.components.ProductDetailInfo
 import com.superstock.app.presentation.products.state.ProductDetailUiState
 
 @OptIn(ExperimentalMaterial3Api::class)

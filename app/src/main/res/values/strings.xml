@@ -9,6 +9,7 @@
     <string name="login_valid">Datos válidos. ¡Formulario listo!</string>
 
     <string name="home_logout">Cerrar sesión</string>
+    <string name="home_add_product">Agregar producto</string>
 
     <string name="product_list_retry">Reintentar</string>
     <string name="product_list_empty">No hay productos registrados.</string>
@@ -23,4 +24,19 @@
     <string name="product_detail_back">Volver</string>
     <string name="product_detail_retry">Reintentar</string>
     <string name="product_description_empty">Sin descripción</string>
+
+    <string name="product_create_title">Nuevo producto</string>
+    <string name="product_create_back">Cancelar</string>
+    <string name="product_create_submit">Guardar producto</string>
+
+    <string name="product_form_name">Nombre</string>
+    <string name="product_form_description">Descripción (opcional)</string>
+    <string name="product_form_price">Precio</string>
+    <string name="product_form_stock">Stock</string>
+    <string name="product_form_category">Categoría</string>
+    <string name="product_form_active">Producto activo</string>
+    <string name="product_form_name_error">Escribe el nombre del producto.</string>
+    <string name="product_form_price_error">Ingresa un precio mayor a 0.</string>
+    <string name="product_form_stock_error">Ingresa un stock entero de 0 o más.</string>
+    <string name="product_form_category_error">Escribe la categoría.</string>
 </resources>

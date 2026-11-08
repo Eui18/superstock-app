@@ -14,6 +14,7 @@ import com.superstock.app.SuperStockApplication
 import com.superstock.app.presentation.auth.screen.LoginScreen
 import com.superstock.app.presentation.auth.screen.RegisterScreen
 import com.superstock.app.presentation.home.screen.HomeScreen
+import com.superstock.app.presentation.products.screen.ProductCreateScreen
 import com.superstock.app.presentation.products.screen.ProductDetailScreen
 import com.superstock.app.presentation.session.state.SessionState
 import com.superstock.app.presentation.session.viewmodel.SessionViewModel
@@ -63,10 +64,22 @@ private fun MainNavHost() {
         navController = navController,
         startDestination = AppRoute.HOME
     ) {
-        composable(AppRoute.HOME) {
+        composable(AppRoute.HOME) { backStackEntry ->
+            val savedStateHandle = backStackEntry.savedStateHandle
+            val productsChanged by savedStateHandle
+                .getStateFlow(AppRoute.PRODUCTS_CHANGED, false)
+                .collectAsStateWithLifecycle()
+
             HomeScreen(
+                productsChanged = productsChanged,
+                onProductsChangedHandled = {
+                    savedStateHandle[AppRoute.PRODUCTS_CHANGED] = false
+                },
                 onProductClick = { productId ->
                     navController.navigate(AppRoute.productDetail(productId))
+                },
+                onAddProductClick = {
+                    navController.navigate(AppRoute.PRODUCT_CREATE)
                 }
             )
         }
@@ -82,6 +95,17 @@ private fun MainNavHost() {
             ProductDetailScreen(
                 productId = productId,
                 onBackClick = { navController.popBackStack() }
+            )
+        }
+        composable(AppRoute.PRODUCT_CREATE) {
+            ProductCreateScreen(
+                onBackClick = { navController.popBackStack() },
+                onProductCreated = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(AppRoute.PRODUCTS_CHANGED, true)
+                    navController.popBackStack()
+                }
             )
         }
     }
