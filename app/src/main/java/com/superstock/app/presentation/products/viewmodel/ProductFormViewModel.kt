@@ -4,20 +4,59 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.superstock.app.data.model.ProductInput
 import com.superstock.app.data.repository.ProductRepository
-import com.superstock.app.presentation.products.state.ProductCreateUiState
+import com.superstock.app.presentation.products.state.ProductFormUiState
 import com.superstock.app.presentation.products.validation.ProductValidators
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.Locale
 
-class ProductCreateViewModel(
-    private val productRepository: ProductRepository
+class ProductFormViewModel(
+    private val productRepository: ProductRepository,
+    private val productId: Int?
 ) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ProductCreateUiState())
-    val uiState: StateFlow<ProductCreateUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(ProductFormUiState(isEditing = productId != null))
+    val uiState: StateFlow<ProductFormUiState> = _uiState.asStateFlow()
+
+    init {
+        loadProduct()
+    }
+
+    fun loadProduct() {
+        if (productId == null || _uiState.value.isLoadingProduct) {
+            return
+        }
+
+        _uiState.update { it.copy(isLoadingProduct = true, loadErrorMessage = null) }
+        viewModelScope.launch {
+            productRepository.getProductById(productId).fold(
+                onSuccess = { product ->
+                    _uiState.update { current ->
+                        current.copy(
+                            name = product.name,
+                            description = product.description,
+                            price = "%.2f".format(Locale.US, product.price),
+                            stock = product.stock.toString(),
+                            category = product.category,
+                            active = product.active,
+                            isLoadingProduct = false
+                        )
+                    }
+                },
+                onFailure = { error ->
+                    _uiState.update { current ->
+                        current.copy(
+                            isLoadingProduct = false,
+                            loadErrorMessage = error.message ?: "No se pudo cargar el producto"
+                        )
+                    }
+                }
+            )
+        }
+    }
 
     fun onNameChange(name: String) {
         _uiState.update { it.copy(name = name, nameError = false) }
@@ -43,9 +82,9 @@ class ProductCreateViewModel(
         _uiState.update { it.copy(active = active) }
     }
 
-    fun createProduct() {
+    fun saveProduct() {
         val state = _uiState.value
-        if (state.isLoading) {
+        if (state.isSaving || state.isLoadingProduct) {
             return
         }
 
@@ -75,19 +114,23 @@ class ProductCreateViewModel(
             active = state.active
         )
 
-        _uiState.update { it.copy(isLoading = true) }
+        _uiState.update { it.copy(isSaving = true) }
         viewModelScope.launch {
-            productRepository.createProduct(input).fold(
+            val result = if (productId == null) {
+                productRepository.createProduct(input)
+            } else {
+                productRepository.updateProduct(productId, input)
+            }
+
+            result.fold(
                 onSuccess = {
-                    // isLoading se queda en true: así el botón sigue bloqueado
-                    // hasta que la pantalla se cierra y no se puede enviar dos veces.
-                    _uiState.update { current -> current.copy(isCreated = true) }
+                    _uiState.update { current -> current.copy(isSaved = true) }
                 },
                 onFailure = { error ->
                     _uiState.update { current ->
                         current.copy(
-                            isLoading = false,
-                            userMessage = error.message ?: "No se pudo crear el producto"
+                            isSaving = false,
+                            userMessage = error.message ?: "No se pudo guardar el producto"
                         )
                     }
                 }

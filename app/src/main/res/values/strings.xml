@@ -22,6 +22,7 @@
 
     <string name="product_detail_title">Detalle del producto</string>
     <string name="product_detail_back">Volver</string>
+    <string name="product_detail_edit">Editar</string>
     <string name="product_detail_retry">Reintentar</string>
     <string name="product_description_empty">Sin descripción</string>
 
@@ -29,12 +30,16 @@
     <string name="product_create_back">Cancelar</string>
     <string name="product_create_submit">Guardar producto</string>
 
+    <string name="product_edit_title">Editar producto</string>
+    <string name="product_edit_submit">Guardar cambios</string>
+
     <string name="product_form_name">Nombre</string>
     <string name="product_form_description">Descripción (opcional)</string>
     <string name="product_form_price">Precio</string>
     <string name="product_form_stock">Stock</string>
     <string name="product_form_category">Categoría</string>
     <string name="product_form_active">Producto activo</string>
+    <string name="product_form_retry">Reintentar</string>
     <string name="product_form_name_error">Escribe el nombre del producto.</string>
     <string name="product_form_price_error">Ingresa un precio mayor a 0.</string>
     <string name="product_form_stock_error">Ingresa un stock entero de 0 o más.</string>

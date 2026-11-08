@@ -14,8 +14,8 @@ import com.superstock.app.SuperStockApplication
 import com.superstock.app.presentation.auth.screen.LoginScreen
 import com.superstock.app.presentation.auth.screen.RegisterScreen
 import com.superstock.app.presentation.home.screen.HomeScreen
-import com.superstock.app.presentation.products.screen.ProductCreateScreen
 import com.superstock.app.presentation.products.screen.ProductDetailScreen
+import com.superstock.app.presentation.products.screen.ProductFormScreen
 import com.superstock.app.presentation.session.state.SessionState
 import com.superstock.app.presentation.session.viewmodel.SessionViewModel
 
@@ -91,19 +91,53 @@ private fun MainNavHost() {
         ) { backStackEntry ->
             val productId = backStackEntry.arguments?.getInt(AppRoute.PRODUCT_ID)
                 ?: return@composable
+            val savedStateHandle = backStackEntry.savedStateHandle
+            val productsChanged by savedStateHandle
+                .getStateFlow(AppRoute.PRODUCTS_CHANGED, false)
+                .collectAsStateWithLifecycle()
 
             ProductDetailScreen(
                 productId = productId,
+                productsChanged = productsChanged,
+                onProductsChangedHandled = {
+                    savedStateHandle[AppRoute.PRODUCTS_CHANGED] = false
+                },
+                onEditClick = {
+                    navController.navigate(AppRoute.productEdit(productId))
+                },
                 onBackClick = { navController.popBackStack() }
             )
         }
         composable(AppRoute.PRODUCT_CREATE) {
-            ProductCreateScreen(
+            ProductFormScreen(
+                productId = null,
                 onBackClick = { navController.popBackStack() },
-                onProductCreated = {
+                onSaved = {
                     navController.previousBackStackEntry
                         ?.savedStateHandle
                         ?.set(AppRoute.PRODUCTS_CHANGED, true)
+                    navController.popBackStack()
+                }
+            )
+        }
+        composable(
+            route = AppRoute.PRODUCT_EDIT,
+            arguments = listOf(
+                navArgument(AppRoute.PRODUCT_ID) { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt(AppRoute.PRODUCT_ID)
+                ?: return@composable
+
+            ProductFormScreen(
+                productId = productId,
+                onBackClick = { navController.popBackStack() },
+                onSaved = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(AppRoute.PRODUCTS_CHANGED, true)
+                    navController.getBackStackEntry(AppRoute.HOME)
+                        .savedStateHandle[AppRoute.PRODUCTS_CHANGED] = true
                     navController.popBackStack()
                 }
             )

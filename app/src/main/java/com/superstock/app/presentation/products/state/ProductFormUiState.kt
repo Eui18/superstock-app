@@ -1,6 +1,7 @@
 package com.superstock.app.presentation.products.state
 
-data class ProductCreateUiState(
+data class ProductFormUiState(
+    val isEditing: Boolean = false,
     val name: String = "",
     val description: String = "",
     val price: String = "",
@@ -11,7 +12,9 @@ data class ProductCreateUiState(
     val priceError: Boolean = false,
     val stockError: Boolean = false,
     val categoryError: Boolean = false,
-    val isLoading: Boolean = false,
-    val isCreated: Boolean = false,
+    val isLoadingProduct: Boolean = false,
+    val loadErrorMessage: String? = null,
+    val isSaving: Boolean = false,
+    val isSaved: Boolean = false,
     val userMessage: String? = null
 )

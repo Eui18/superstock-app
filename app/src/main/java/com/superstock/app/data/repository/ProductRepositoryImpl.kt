@@ -23,4 +23,8 @@ class ProductRepositoryImpl(
     override suspend fun createProduct(input: ProductInput): Result<Product> {
         return safeApiCall { productApiService.createProduct(input.toRequestDto()).toModel() }
     }
+
+    override suspend fun updateProduct(id: Int, input: ProductInput): Result<Product> {
+        return safeApiCall { productApiService.updateProduct(id, input.toRequestDto()).toModel() }
+    }
 }

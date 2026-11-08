@@ -28,6 +28,7 @@ import com.superstock.app.presentation.products.state.ProductDetailUiState
 fun ProductDetailContent(
     uiState: ProductDetailUiState,
     onRetry: () -> Unit,
+    onEditClick: () -> Unit,
     onBackClick: () -> Unit
 ) {
     Scaffold(
@@ -37,6 +38,13 @@ fun ProductDetailContent(
                 navigationIcon = {
                     TextButton(onClick = onBackClick) {
                         Text(stringResource(R.string.product_detail_back))
+                    }
+                },
+                actions = {
+                    if (uiState.product != null) {
+                        TextButton(onClick = onEditClick) {
+                            Text(stringResource(R.string.product_detail_edit))
+                        }
                     }
                 }
             )
