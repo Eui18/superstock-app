@@ -5,13 +5,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.superstock.app.SuperStockApplication
 import com.superstock.app.presentation.auth.screen.LoginScreen
 import com.superstock.app.presentation.auth.screen.RegisterScreen
 import com.superstock.app.presentation.home.screen.HomeScreen
+import com.superstock.app.presentation.products.screen.ProductDetailScreen
 import com.superstock.app.presentation.session.state.SessionState
 import com.superstock.app.presentation.session.viewmodel.SessionViewModel
 
@@ -61,7 +64,25 @@ private fun MainNavHost() {
         startDestination = AppRoute.HOME
     ) {
         composable(AppRoute.HOME) {
-            HomeScreen()
+            HomeScreen(
+                onProductClick = { productId ->
+                    navController.navigate(AppRoute.productDetail(productId))
+                }
+            )
+        }
+        composable(
+            route = AppRoute.PRODUCT_DETAIL,
+            arguments = listOf(
+                navArgument(AppRoute.PRODUCT_ID) { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments?.getInt(AppRoute.PRODUCT_ID)
+                ?: return@composable
+
+            ProductDetailScreen(
+                productId = productId,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
 }

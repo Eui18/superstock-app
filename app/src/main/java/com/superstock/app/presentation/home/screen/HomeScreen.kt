@@ -12,6 +12,7 @@ import com.superstock.app.presentation.products.viewmodel.ProductListViewModel
 
 @Composable
 fun HomeScreen(
+    onProductClick: (Int) -> Unit,
     homeViewModel: HomeViewModel = viewModel(
         factory = (LocalContext.current.applicationContext as SuperStockApplication)
             .container.homeViewModelFactory
@@ -26,6 +27,7 @@ fun HomeScreen(
     HomeContent(
         uiState = uiState,
         onRetry = productListViewModel::loadProducts,
-        onLogoutClick = homeViewModel::logout
+        onLogoutClick = homeViewModel::logout,
+        onProductClick = onProductClick
     )
 }

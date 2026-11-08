@@ -18,4 +18,9 @@
     <string name="product_stock">Stock: %1$d</string>
     <string name="product_active">Activo</string>
     <string name="product_inactive">Inactivo</string>
+
+    <string name="product_detail_title">Detalle del producto</string>
+    <string name="product_detail_back">Volver</string>
+    <string name="product_detail_retry">Reintentar</string>
+    <string name="product_description_empty">Sin descripción</string>
 </resources>

@@ -11,7 +11,8 @@ import com.superstock.app.presentation.products.state.ProductListUiState
 fun HomeContent(
     uiState: ProductListUiState,
     onRetry: () -> Unit,
-    onLogoutClick: () -> Unit
+    onLogoutClick: () -> Unit,
+    onProductClick: (Int) -> Unit
 ) {
     Scaffold(
         topBar = { HomeTopBar(onLogoutClick = onLogoutClick) }
@@ -19,6 +20,7 @@ fun HomeContent(
         ProductListContent(
             uiState = uiState,
             onRetry = onRetry,
+            onProductClick = onProductClick,
             modifier = Modifier.padding(padding)
         )
     }

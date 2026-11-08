@@ -26,6 +26,7 @@ import com.superstock.app.presentation.products.state.ProductListUiState
 fun ProductListContent(
     uiState: ProductListUiState,
     onRetry: () -> Unit,
+    onProductClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -68,7 +69,10 @@ fun ProductListContent(
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.products, key = { it.id }) { product ->
-                        ProductItem(product = product)
+                        ProductItem(
+                            product = product,
+                            onClick = { onProductClick(product.id) }
+                        )
                     }
                 }
             }
