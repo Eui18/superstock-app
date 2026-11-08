@@ -44,4 +44,12 @@
     <string name="product_form_price_error">Ingresa un precio mayor a 0.</string>
     <string name="product_form_stock_error">Ingresa un stock entero de 0 o más.</string>
     <string name="product_form_category_error">Escribe la categoría.</string>
+
+    <string name="product_detail_delete">Eliminar</string>
+
+    <string name="product_delete_dialog_title">¿Eliminar producto?</string>
+    <string name="product_delete_dialog_message">Se eliminará «%1$s». Esta acción no se puede deshacer.</string>
+    <string name="product_delete_confirm">Eliminar</string>
+    <string name="product_delete_cancel">Cancelar</string>
+    <string name="product_delete_already_gone">Ese producto ya no existía.</string>
 </resources>

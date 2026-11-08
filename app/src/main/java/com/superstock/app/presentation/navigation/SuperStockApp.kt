@@ -105,6 +105,12 @@ private fun MainNavHost() {
                 onEditClick = {
                     navController.navigate(AppRoute.productEdit(productId))
                 },
+                onProductDeleted = {
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set(AppRoute.PRODUCTS_CHANGED, true)
+                    navController.popBackStack()
+                },
                 onBackClick = { navController.popBackStack() }
             )
         }

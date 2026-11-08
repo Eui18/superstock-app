@@ -1,5 +1,6 @@
 package com.superstock.app.data.repository
 
+import com.superstock.app.data.datasource.remote.ApiException
 import com.superstock.app.data.datasource.remote.ProductApiService
 import com.superstock.app.data.datasource.remote.safeApiCall
 import com.superstock.app.data.mapper.toModel
@@ -26,5 +27,17 @@ class ProductRepositoryImpl(
 
     override suspend fun updateProduct(id: Int, input: ProductInput): Result<Product> {
         return safeApiCall { productApiService.updateProduct(id, input.toRequestDto()).toModel() }
+    }
+
+    override suspend fun deleteProduct(id: Int): Result<Unit> {
+        val result = safeApiCall { productApiService.deleteProduct(id) }
+
+        val error = result.exceptionOrNull()
+        if (error is ApiException.Http && error.code == 404) {
+            return Result.failure(
+                ProductNotFoundException(error.message ?: "Producto no encontrado", error)
+            )
+        }
+        return result
     }
 }

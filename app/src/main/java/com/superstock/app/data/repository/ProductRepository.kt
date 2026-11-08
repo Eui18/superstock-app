@@ -8,4 +8,5 @@ interface ProductRepository {
     suspend fun getProductById(id: Int): Result<Product>
     suspend fun createProduct(input: ProductInput): Result<Product>
     suspend fun updateProduct(id: Int, input: ProductInput): Result<Product>
+    suspend fun deleteProduct(id: Int): Result<Unit>
 }
