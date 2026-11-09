@@ -16,7 +16,6 @@
 
     <string name="product_category">Categoría: %1$s</string>
     <string name="product_price">Precio: $%1$.2f</string>
-    <string name="product_stock">Stock: %1$d</string>
     <string name="product_active">Activo</string>
     <string name="product_inactive">Inactivo</string>
 
@@ -43,7 +42,7 @@
     <string name="product_form_name_error">Escribe el nombre del producto.</string>
     <string name="product_form_price_error">Ingresa un precio mayor a 0.</string>
     <string name="product_form_stock_error">Ingresa un stock entero de 0 o más.</string>
-    <string name="product_form_category_error">Escribe la categoría.</string>
+    <string name="product_form_category_error">Selecciona una categoría.</string>
 
     <string name="product_detail_delete">Eliminar</string>
 
@@ -52,4 +51,26 @@
     <string name="product_delete_confirm">Eliminar</string>
     <string name="product_delete_cancel">Cancelar</string>
     <string name="product_delete_already_gone">Ese producto ya no existía.</string>
+
+    <string name="product_form_unit">Unidad de medida</string>
+    <string name="product_stock_with_unit">Stock: %1$d (%2$s)</string>
+
+    <string name="category_fruits_vegetables">Frutas y verduras</string>
+    <string name="category_dairy">Lácteos</string>
+    <string name="category_beverages">Bebidas</string>
+    <string name="category_groceries">Abarrotes</string>
+    <string name="category_bakery">Panadería</string>
+    <string name="category_meat_cold_cuts">Carnes y embutidos</string>
+    <string name="category_cleaning">Limpieza</string>
+    <string name="category_personal_care">Higiene personal</string>
+    <string name="category_frozen">Congelados</string>
+
+    <string name="unit_box">Caja</string>
+    <string name="unit_bag">Bolsa</string>
+    <string name="unit_bottle">Botella</string>
+    <string name="unit_piece">Pieza</string>
+    <string name="unit_package">Paquete</string>
+    <string name="unit_can">Lata</string>
+    <string name="unit_jar">Frasco</string>
+    <string name="unit_roll">Rollo</string>
 </resources>

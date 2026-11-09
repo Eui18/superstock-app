@@ -41,9 +41,20 @@ fun ProductDetailInfo(
             text = description,
             style = MaterialTheme.typography.bodyLarge
         )
-        Text(text = stringResource(R.string.product_category, product.category))
+        Text(
+            text = stringResource(
+                R.string.product_category,
+                stringResource(product.category.labelRes)
+            )
+        )
         Text(text = stringResource(R.string.product_price, product.price))
-        Text(text = stringResource(R.string.product_stock, product.stock))
+        Text(
+            text = stringResource(
+                R.string.product_stock_with_unit,
+                product.stock,
+                stringResource(product.unit.labelRes)
+            )
+        )
         Text(
             text = stringResource(
                 if (product.active) R.string.product_active else R.string.product_inactive

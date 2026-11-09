@@ -3,7 +3,9 @@ package com.superstock.app.data.mapper
 import com.superstock.app.data.dto.ProductDto
 import com.superstock.app.data.dto.ProductRequestDto
 import com.superstock.app.data.model.Product
+import com.superstock.app.data.model.ProductCategory
 import com.superstock.app.data.model.ProductInput
+import com.superstock.app.data.model.ProductUnit
 
 fun ProductDto.toModel(): Product {
     return Product(
@@ -12,7 +14,8 @@ fun ProductDto.toModel(): Product {
         description = description,
         price = price,
         stock = stock,
-        category = category,
+        category = ProductCategory.fromName(category) ?: ProductCategory.GROCERIES,
+        unit = unit?.let { ProductUnit.fromName(it) } ?: ProductUnit.PIECE,
         active = active
     )
 }
@@ -27,7 +30,8 @@ fun ProductInput.toRequestDto(): ProductRequestDto {
         description = description,
         price = price,
         stock = stock,
-        category = category,
+        category = category.name,
+        unit = unit.name,
         active = active
     )
 }

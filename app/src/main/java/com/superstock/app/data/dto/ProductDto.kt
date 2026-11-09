@@ -10,5 +10,6 @@ data class ProductDto(
     val price: Double,
     val stock: Int,
     val category: String,
+    val unit: String? = null,
     val active: Boolean
 )

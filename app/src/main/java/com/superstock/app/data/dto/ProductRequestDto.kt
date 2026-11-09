@@ -9,5 +9,6 @@ data class ProductRequestDto(
     val price: Double,
     val stock: Int,
     val category: String,
+    val unit: String,
     val active: Boolean
 )

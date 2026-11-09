@@ -27,6 +27,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.superstock.app.R
+import com.superstock.app.data.model.ProductCategory
+import com.superstock.app.data.model.ProductUnit
 import com.superstock.app.presentation.products.components.ProductForm
 import com.superstock.app.presentation.products.state.ProductFormUiState
 
@@ -38,7 +40,8 @@ fun ProductFormContent(
     onDescriptionChange: (String) -> Unit,
     onPriceChange: (String) -> Unit,
     onStockChange: (String) -> Unit,
-    onCategoryChange: (String) -> Unit,
+    onCategoryChange: (ProductCategory) -> Unit,
+    onUnitChange: (ProductUnit) -> Unit,
     onActiveChange: (Boolean) -> Unit,
     onSaveClick: () -> Unit,
     onRetryLoad: () -> Unit,
@@ -113,6 +116,7 @@ fun ProductFormContent(
                     price = uiState.price,
                     stock = uiState.stock,
                     category = uiState.category,
+                    unit = uiState.unit,
                     active = uiState.active,
                     nameError = uiState.nameError,
                     priceError = uiState.priceError,
@@ -125,6 +129,7 @@ fun ProductFormContent(
                     onPriceChange = onPriceChange,
                     onStockChange = onStockChange,
                     onCategoryChange = onCategoryChange,
+                    onUnitChange = onUnitChange,
                     onActiveChange = onActiveChange,
                     onSubmitClick = onSaveClick,
                     modifier = Modifier

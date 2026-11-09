@@ -5,6 +5,7 @@ data class ProductInput(
     val description: String,
     val price: Double,
     val stock: Int,
-    val category: String,
+    val category: ProductCategory,
+    val unit: ProductUnit,
     val active: Boolean
 )

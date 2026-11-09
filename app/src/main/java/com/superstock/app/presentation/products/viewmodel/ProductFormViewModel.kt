@@ -2,7 +2,9 @@ package com.superstock.app.presentation.products.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.superstock.app.data.model.ProductCategory
 import com.superstock.app.data.model.ProductInput
+import com.superstock.app.data.model.ProductUnit
 import com.superstock.app.data.repository.ProductRepository
 import com.superstock.app.presentation.products.state.ProductFormUiState
 import com.superstock.app.presentation.products.validation.ProductValidators
@@ -41,6 +43,7 @@ class ProductFormViewModel(
                             price = "%.2f".format(Locale.US, product.price),
                             stock = product.stock.toString(),
                             category = product.category,
+                            unit = product.unit,
                             active = product.active,
                             isLoadingProduct = false
                         )
@@ -74,8 +77,12 @@ class ProductFormViewModel(
         _uiState.update { it.copy(stock = stock, stockError = false) }
     }
 
-    fun onCategoryChange(category: String) {
+    fun onCategoryChange(category: ProductCategory) {
         _uiState.update { it.copy(category = category, categoryError = false) }
+    }
+
+    fun onUnitChange(unit: ProductUnit) {
+        _uiState.update { it.copy(unit = unit) }
     }
 
     fun onActiveChange(active: Boolean) {
@@ -89,7 +96,7 @@ class ProductFormViewModel(
         }
 
         val name = state.name.trim()
-        val category = state.category.trim()
+        val category = state.category
         val price = ProductValidators.parsePrice(state.price)
         val stock = ProductValidators.parseStock(state.stock)
 
@@ -98,10 +105,10 @@ class ProductFormViewModel(
                 nameError = name.isEmpty(),
                 priceError = price == null,
                 stockError = stock == null,
-                categoryError = category.isEmpty()
+                categoryError = category == null
             )
         }
-        if (name.isEmpty() || category.isEmpty() || price == null || stock == null) {
+        if (name.isEmpty() || category == null || price == null || stock == null) {
             return
         }
 
@@ -111,6 +118,7 @@ class ProductFormViewModel(
             price = price,
             stock = stock,
             category = category,
+            unit = state.unit,
             active = state.active
         )
 

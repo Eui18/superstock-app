@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.superstock.app.R
+import com.superstock.app.data.model.ProductCategory
+import com.superstock.app.data.model.ProductUnit
 
 @Composable
 fun ProductForm(
@@ -26,7 +28,8 @@ fun ProductForm(
     description: String,
     price: String,
     stock: String,
-    category: String,
+    category: ProductCategory?,
+    unit: ProductUnit,
     active: Boolean,
     nameError: Boolean,
     priceError: Boolean,
@@ -38,11 +41,15 @@ fun ProductForm(
     onDescriptionChange: (String) -> Unit,
     onPriceChange: (String) -> Unit,
     onStockChange: (String) -> Unit,
-    onCategoryChange: (String) -> Unit,
+    onCategoryChange: (ProductCategory) -> Unit,
+    onUnitChange: (ProductUnit) -> Unit,
     onActiveChange: (Boolean) -> Unit,
     onSubmitClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val categoryLabels = ProductCategory.entries.map { stringResource(it.labelRes) }
+    val unitLabels = ProductUnit.entries.map { stringResource(it.labelRes) }
+
     Column(
         modifier = modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -99,18 +106,20 @@ fun ProductForm(
             modifier = Modifier.fillMaxWidth()
         )
 
-        OutlinedTextField(
-            value = category,
-            onValueChange = onCategoryChange,
-            label = { Text(stringResource(R.string.product_form_category)) },
+        OptionDropdown(
+            label = stringResource(R.string.product_form_unit),
+            options = unitLabels,
+            selectedIndex = unit.ordinal,
+            onOptionSelected = { index -> onUnitChange(ProductUnit.entries[index]) }
+        )
+
+        OptionDropdown(
+            label = stringResource(R.string.product_form_category),
+            options = categoryLabels,
+            selectedIndex = category?.ordinal,
+            onOptionSelected = { index -> onCategoryChange(ProductCategory.entries[index]) },
             isError = categoryError,
-            supportingText = if (categoryError) {
-                { Text(stringResource(R.string.product_form_category_error)) }
-            } else {
-                null
-            },
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            errorText = stringResource(R.string.product_form_category_error)
         )
 
         Row(

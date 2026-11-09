@@ -34,6 +34,7 @@ fun ProductFormScreen(
         onPriceChange = productFormViewModel::onPriceChange,
         onStockChange = productFormViewModel::onStockChange,
         onCategoryChange = productFormViewModel::onCategoryChange,
+        onUnitChange = productFormViewModel::onUnitChange,
         onActiveChange = productFormViewModel::onActiveChange,
         onSaveClick = productFormViewModel::saveProduct,
         onRetryLoad = productFormViewModel::loadProduct,
