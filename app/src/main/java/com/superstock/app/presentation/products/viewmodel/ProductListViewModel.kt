@@ -2,6 +2,7 @@ package com.superstock.app.presentation.products.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.superstock.app.data.model.ProductCategory
 import com.superstock.app.data.repository.ProductRepository
 import com.superstock.app.presentation.products.state.ProductListUiState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,6 +20,10 @@ class ProductListViewModel(
 
     init {
         loadProducts()
+    }
+
+    fun onCategorySelected(category: ProductCategory?) {
+        _uiState.update { it.copy(selectedCategory = category) }
     }
 
     fun loadProducts() {

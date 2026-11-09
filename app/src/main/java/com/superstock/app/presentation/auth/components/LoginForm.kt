@@ -2,16 +2,24 @@ package com.superstock.app.presentation.auth.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
+import androidx.compose.material.icons.outlined.Email
+import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -27,49 +35,60 @@ fun LoginForm(
 ) {
     Column(
         modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        OutlinedTextField(
+        AuthTextField(
+            label = "Correo electrónico",
             value = email,
             onValueChange = onEmailChange,
-            label = { Text("Correo electrónico") },
+            placeholder = "Correo electrónico",
+            leadingIcon = Icons.Outlined.Email,
             isError = emailError,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            errorText = "Ingresa un correo electrónico válido.",
+            keyboardType = KeyboardType.Email
         )
 
-        if (emailError) {
-            Text("Ingresa un correo electrónico válido.")
-        }
-
-        OutlinedTextField(
+        AuthTextField(
+            label = "Contraseña",
             value = password,
             onValueChange = onPasswordChange,
-            label = { Text("Contraseña") },
-            visualTransformation = PasswordVisualTransformation(),
+            placeholder = "Contraseña",
+            leadingIcon = Icons.Outlined.Lock,
             isError = passwordError,
-            singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            errorText = "La contraseña debe tener al menos 8 caracteres.",
+            isPassword = true,
+            keyboardType = KeyboardType.Password
         )
-
-        if (passwordError) {
-            Text("La contraseña debe tener al menos 8 caracteres.")
-        }
 
         Button(
             onClick = onLoginClick,
             enabled = !isLoading,
+            shape = RoundedCornerShape(16.dp),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 8.dp)
+                .height(52.dp)
         ) {
             if (isLoading) {
                 CircularProgressIndicator(
                     modifier = Modifier.size(20.dp),
-                    strokeWidth = 2.dp
+                    strokeWidth = 2.dp,
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             } else {
-                Text("Iniciar sesión")
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = "Iniciar sesión",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
             }
         }
     }

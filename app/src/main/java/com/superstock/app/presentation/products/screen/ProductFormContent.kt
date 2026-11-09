@@ -1,5 +1,6 @@
 package com.superstock.app.presentation.products.screen
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -17,18 +19,20 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.superstock.app.R
 import com.superstock.app.data.model.ProductCategory
 import com.superstock.app.data.model.ProductUnit
+import com.superstock.app.presentation.products.components.ProductBackButton
 import com.superstock.app.presentation.products.components.ProductForm
 import com.superstock.app.presentation.products.state.ProductFormUiState
 
@@ -61,14 +65,25 @@ fun ProductFormContent(
     val submitRes = if (uiState.isEditing) R.string.product_edit_submit else R.string.product_create_submit
 
     Scaffold(
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(titleRes)) },
+                title = {
+                    Text(
+                        text = stringResource(titleRes),
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
                 navigationIcon = {
-                    TextButton(onClick = onBackClick) {
-                        Text(stringResource(R.string.product_create_back))
-                    }
-                }
+                    ProductBackButton(
+                        onClick = onBackClick,
+                        contentDescription = stringResource(R.string.product_create_back)
+                    )
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                )
             )
         },
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
@@ -99,10 +114,14 @@ fun ProductFormContent(
                         Text(
                             text = uiState.loadErrorMessage,
                             color = MaterialTheme.colorScheme.error,
-                            style = MaterialTheme.typography.bodyLarge
+                            style = MaterialTheme.typography.bodyLarge,
+                            textAlign = TextAlign.Center
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(onClick = onRetryLoad) {
+                        Button(
+                            onClick = onRetryLoad,
+                            shape = RoundedCornerShape(16.dp)
+                        ) {
                             Text(stringResource(R.string.product_form_retry))
                         }
                     }
@@ -110,35 +129,39 @@ fun ProductFormContent(
             }
 
             else -> {
-                ProductForm(
-                    name = uiState.name,
-                    description = uiState.description,
-                    price = uiState.price,
-                    stock = uiState.stock,
-                    category = uiState.category,
-                    unit = uiState.unit,
-                    active = uiState.active,
-                    nameError = uiState.nameError,
-                    priceError = uiState.priceError,
-                    stockError = uiState.stockError,
-                    categoryError = uiState.categoryError,
-                    isLoading = uiState.isSaving,
-                    submitText = stringResource(submitRes),
-                    onNameChange = onNameChange,
-                    onDescriptionChange = onDescriptionChange,
-                    onPriceChange = onPriceChange,
-                    onStockChange = onStockChange,
-                    onCategoryChange = onCategoryChange,
-                    onUnitChange = onUnitChange,
-                    onActiveChange = onActiveChange,
-                    onSubmitClick = onSaveClick,
+                Column(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(padding)
                         .imePadding()
                         .verticalScroll(rememberScrollState())
-                        .padding(16.dp)
-                )
+                        .padding(16.dp),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    ProductForm(
+                        name = uiState.name,
+                        description = uiState.description,
+                        price = uiState.price,
+                        stock = uiState.stock,
+                        category = uiState.category,
+                        unit = uiState.unit,
+                        active = uiState.active,
+                        nameError = uiState.nameError,
+                        priceError = uiState.priceError,
+                        stockError = uiState.stockError,
+                        categoryError = uiState.categoryError,
+                        isLoading = uiState.isSaving,
+                        submitText = stringResource(submitRes),
+                        onNameChange = onNameChange,
+                        onDescriptionChange = onDescriptionChange,
+                        onPriceChange = onPriceChange,
+                        onStockChange = onStockChange,
+                        onCategoryChange = onCategoryChange,
+                        onUnitChange = onUnitChange,
+                        onActiveChange = onActiveChange,
+                        onSubmitClick = onSaveClick
+                    )
+                }
             }
         }
     }

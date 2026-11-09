@@ -18,6 +18,8 @@
     <string name="product_price">Precio: $%1$.2f</string>
     <string name="product_active">Activo</string>
     <string name="product_inactive">Inactivo</string>
+    <string name="product_status_active">Activo</string>
+    <string name="product_status_inactive">Inactivo</string>
 
     <string name="product_detail_title">Detalle del producto</string>
     <string name="product_detail_back">Volver</string>
@@ -73,4 +75,19 @@
     <string name="unit_can">Lata</string>
     <string name="unit_jar">Frasco</string>
     <string name="unit_roll">Rollo</string>
+
+    <string name="home_category_all">Todos</string>
+    <string name="home_price">$%1$.2f</string>
+    <string name="home_stock">%1$d %2$s</string>
+    <string name="home_out_of_stock">Agotado</string>
+    <string name="home_empty_category">No hay productos en esta categoría.</string>
+
+    <string name="detail_description_title">Descripción</string>
+    <string name="detail_info_title">Información</string>
+
+    <string name="home_products_title">Productos (%1$d)</string>
+    <string name="home_summary_title">Resumen del inventario</string>
+    <string name="home_summary_total">Productos</string>
+    <string name="home_summary_active">Activos</string>
+    <string name="home_summary_out">Agotados</string>
 </resources>

@@ -39,6 +39,7 @@ fun HomeScreen(
         onRetry = productListViewModel::loadProducts,
         onLogoutClick = homeViewModel::logout,
         onProductClick = onProductClick,
-        onAddProductClick = onAddProductClick
+        onAddProductClick = onAddProductClick,
+        onCategoryClick = productListViewModel::onCategorySelected
     )
 }
